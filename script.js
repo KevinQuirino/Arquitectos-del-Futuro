@@ -126,7 +126,7 @@ function agregarPrioridad() {
     const nombre = nombrePrioridadInput.value.trim();
     const costo = parseInt(costoPrioridadInput.value);
 
-    // *** MÍNIMO DE COSTO CAMBIADO A 1000 MXN ***
+    // MÍNIMO DE COSTO: $1,000 MXN
     if (!nombre || isNaN(costo) || costo < 1000) {
         alert('Por favor, ingresen un nombre válido y un costo estimado (mínimo $1,000 MXN).');
         return;
@@ -170,6 +170,10 @@ function generarHistoriaFinal() {
     const ubicacion = ubicacionInput.value.trim();
     const estilo = estiloInput.value.trim();
     const extras = prioridadesGuardadas.filter(p => !p.base);
+    
+    // *** 1. CAPTURAR LA HISTORIA ORIGINAL ESCRITA POR LOS JUGADORES ***
+    const historiaFinalOriginal = historiaTextarea.value.trim();
+
 
     // Referencias para la puntuación
     const puntuacionContainer = document.getElementById('puntuacion-final-container');
@@ -237,7 +241,7 @@ function generarHistoriaFinal() {
     `;
     puntuacionContainer.style.display = 'block';
 
-    // --- 5. GENERACIÓN DEL RESUMEN FINAL ---
+    // --- 5. GENERACIÓN DEL RESUMEN FINAL COMBINADO ---
     let narrativa = `
         ¡Misión Cumplida! 🎉 ¡Puntuación: ${puntuacion} puntos!
 
@@ -255,12 +259,22 @@ function generarHistoriaFinal() {
     });
     
     narrativa += `\nGracias a esta cuidadosa planificación, logramos incluir todos los elementos esenciales mientras nos manteníamos dentro del presupuesto (o negociamos con éxito!).`;
-
-    narrativa += `\n\nAhora, escriban el toque final de esta historia en el campo de texto: ¿Qué sensaciones les provoca este nuevo hogar? ¿Cuál es su momento favorito en este diseño?`;
+    
+    // *** 2. COMBINAR LA NARRATIVA GENERADA CON LA ESCRITA POR EL USUARIO ***
+    if (historiaFinalOriginal) {
+        narrativa += `\n\n--- SU NARRATIVA PERSONAL ---\n`;
+        narrativa += `\n${historiaFinalOriginal}`;
+    } else {
+        narrativa += `\n\n[El espacio para la historia final quedó vacío. ¡Recuerden añadir el toque personal!]`;
+    }
+    // FIN COMBINACIÓN
 
     historiaTextarea.value = narrativa;
     
     puntuacionContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    // Mostrar el botón de descarga del PDF
+    document.getElementById('btn-descargar-pdf').style.display = 'inline-block';
 }
 
 function resetearJuego() {
@@ -268,6 +282,62 @@ function resetearJuego() {
         localStorage.clear(); 
         window.location.reload();
     }
+}
+
+
+// --- FUNCIÓN PARA DESCARGAR CARTA EN PDF ---
+
+function descargarCartaDiseno() {
+    const { jsPDF } = window.jspdf;
+    
+    // El elemento que queremos convertir es el contenido de la Fase 4 sin el footer de botones
+    const input = document.getElementById('contenido-a-exportar');
+
+    const textarea = document.getElementById('historia-final');
+    
+    // Obtener el texto del textarea y ocultar el textarea original
+    const textoHistoria = textarea.value;
+    textarea.style.display = 'none';
+
+    // Crear un nuevo div con el contenido del textarea (usando <pre> para mantener el formato)
+    const textoDiv = document.createElement('div');
+    textoDiv.innerHTML = `<pre style="font-family: 'Poppins', sans-serif; white-space: pre-wrap; margin-top: 10px; font-size: 0.95rem; color: #333;">${textoHistoria}</pre>`;
+    
+    // Insertar el texto formateado antes del contenedor de puntuación
+    input.insertBefore(textoDiv, input.querySelector('#puntuacion-final-container'));
+
+
+    html2canvas(input, {
+        scale: 2, 
+        logging: false,
+        useCORS: true 
+    }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('p', 'mm', 'a4'); 
+        const imgWidth = 210; 
+        const pageHeight = 295;
+        const imgHeight = canvas.height * imgWidth / canvas.width;
+        let heightLeft = imgHeight;
+        let position = 0;
+
+        // Añadir la primera página
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+
+        // Manejar contenido de múltiples páginas
+        while (heightLeft >= 0) {
+            position = heightLeft - imgHeight;
+            pdf.addPage();
+            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+        }
+
+        pdf.save('Carta_Diseno_Arquitectos.pdf');
+
+        // Restaurar la interfaz después de la descarga
+        textarea.style.display = 'block';
+        input.removeChild(textoDiv); 
+    });
 }
 
 // Iniciar el dashboard cargando datos si existen

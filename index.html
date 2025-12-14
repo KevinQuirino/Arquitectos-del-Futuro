@@ -108,25 +108,31 @@
             <div class="card-header bg-dark text-white">
                 <h4 class="mb-0">Fase 4: La Historia Final</h4>
             </div>
-            <div class="card-body">
+            
+            <div class="card-body" id="contenido-a-exportar"> 
                 
                 <div class="alert alert-primary mt-3 mb-4" id="puntuacion-final-container" style="display:none;">
-                    <h5 class="mb-0">Puntuación de Eficiencia: <span id="puntuacion-valor" class="fw-bold">0</span> puntos</h5>
+                    <h5 class="mb-0">Puntuación de Eficiencia: <span id="puntuacion-valor" class="fw-bold">0</span> puntos</span></h5>
                     <small id="puntuacion-mensaje"></small>
                 </div>
 
                 <p>Generen la narrativa final y cuenten la historia de su diseño:</p>
                 <textarea class="form-control" rows="8" id="historia-final" placeholder="Ej: El sol de la sierra entra suavemente por las ventanas..."></textarea>
                 
-                <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-3">
+            </div>
+            
+            <div class="card-footer bg-light">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
                     <button class="btn btn-info" onclick="generarHistoriaFinal()">
                         <i class="fas fa-magic"></i> Generar Resumen
+                    </button>
+                    <button class="btn btn-success" id="btn-descargar-pdf" onclick="descargarCartaDiseno()" style="display:none;">
+                        <i class="fas fa-file-pdf"></i> Descargar Carta de Diseño (PDF)
                     </button>
                     <button class="btn btn-warning" onclick="resetearJuego()">
                         <i class="fas fa-redo"></i> Reiniciar Juego
                     </button>
                 </div>
-                
             </div>
         </div>
 
@@ -139,6 +145,10 @@
     </footer>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
     <script src="script.js"></script>
 </body>
 </html>
