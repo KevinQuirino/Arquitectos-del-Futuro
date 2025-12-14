@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misión: Arquitectos del Futuro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container mt-5">
+        <header class="text-center mb-4">
+            <h1 class="display-4"><i class="fas fa-heart"></i> Misión: Arquitectos del Futuro</h1>
+            <p class="lead">Diseñen juntos la casa de sus sueños con un presupuesto de **$3,000,000 MXN**.</p> 
+        </header>
+
+        <div class="card shadow-sm mb-4 bg-light">
+            <div class="card-body">
+                <h3 class="card-title text-primary"><i class="fas fa-chart-bar"></i> Resumen de la Misión</h3>
+                <p><strong>Ubicación/Estilo:</strong> <span id="resumen-estilo">Pendiente...</span></p>
+                <p><strong>Presupuesto Restante:</strong> <span id="presupuesto-restante" class="text-success">$3,000,000</span></p>
+                <p><strong>Costo Total Asignado:</strong> <span id="costo-total" class="text-danger">$0</span></p>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-dark text-white">
+                <h4 class="mb-0">Fase 1: Ubicación y Estilo</h4>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="ubicacion" class="form-label">Ubicación Elegida (Orizaba / Puerto Escondido / Híbrido):</label>
+                    <input type="text" class="form-control" id="ubicacion" placeholder="Ej: Orizaba (Vistas) y Puerto Escondido (Playa)">
+                </div>
+                <div class="mb-3">
+                    <label for="estilo" class="form-label">Estilo Elegido (Rústico-Moderno / Mediterráneo / Híbrido):</label>
+                    <input type="text" class="form-control" id="estilo" placeholder="Ej: Rústico-Mediterráneo">
+                </div>
+                <button class="btn btn-primary" onclick="guardarFase1()">Guardar Acuerdo</button>
+            </div>
+        </div>
+
+
+        <div class="card mb-4">
+            <div class="card-header bg-dark text-white">
+                <h4 class="mb-0">Fase 2 & 3: Prioridades y Presupuesto</h4>
+            </div>
+            <div class="card-body">
+                <h5 class="mb-3">Añadir Prioridad (Elemento Esencial)</h5>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="prioridad-nombre" placeholder="Nombre (Ej: Estudio de Arte)">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="number" class="form-control" id="prioridad-costo" placeholder="Costo Estimado (MXN)" min="20000"> 
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-success w-100" onclick="agregarPrioridad()">Añadir</button>
+                    </div>
+                </div>
+
+                <h5 class="mt-4">Lista de Prioridades (Presupuesto: $3,000,000 MXN)</h5>
+                <ul class="list-group" id="lista-prioridades">
+                    </ul>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-dark text-white">
+                <h4 class="mb-0">Fase 4: La Historia Final</h4>
+            </div>
+            <div class="card-body">
+                
+                <div class="alert alert-primary mt-3 mb-4" id="puntuacion-final-container" style="display:none;">
+                    <h5 class="mb-0">Puntuación de Eficiencia: <span id="puntuacion-valor" class="fw-bold">0</span> puntos</h5>
+                    <small id="puntuacion-mensaje"></small>
+                </div>
+
+                <p>Generen la narrativa final y cuenten la historia de su diseño:</p>
+                <textarea class="form-control" rows="8" id="historia-final" placeholder="Ej: El sol de la sierra entra suavemente por las ventanas..."></textarea>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-3">
+                    <button class="btn btn-info" onclick="generarHistoriaFinal()">
+                        <i class="fas fa-magic"></i> Generar Resumen
+                    </button>
+                    <button class="btn btn-warning" onclick="resetearJuego()">
+                        <i class="fas fa-redo"></i> Reiniciar Juego
+                    </button>
+                </div>
+                
+            </div>
+        </div>
+
+    </div> <footer class="footer mt-auto py-3 bg-dark text-white text-center">
+        <div class="container">
+            <span class="text-muted">
+                Juego creado por **Baby Bu** para **Baby Blue** con mucho amor.
+            </span>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
