@@ -126,8 +126,9 @@ function agregarPrioridad() {
     const nombre = nombrePrioridadInput.value.trim();
     const costo = parseInt(costoPrioridadInput.value);
 
-    if (!nombre || isNaN(costo) || costo < 20000) {
-        alert('Por favor, ingresen un nombre válido y un costo estimado (mínimo $20,000 MXN).');
+    // *** MÍNIMO DE COSTO CAMBIADO A 1000 MXN ***
+    if (!nombre || isNaN(costo) || costo < 1000) {
+        alert('Por favor, ingresen un nombre válido y un costo estimado (mínimo $1,000 MXN).');
         return;
     }
 
